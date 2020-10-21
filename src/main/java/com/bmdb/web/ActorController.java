@@ -1,6 +1,7 @@
 package com.bmdb.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,9 @@ public class ActorController
 	
 	// Get a Actor by id
 	@GetMapping("/{id}")
-	public Actor getActor(@PathVariable int id) {
-		return actorRepo.getOne(id);
+	public Optional getActor(@PathVariable int id) {
+		Optional<Actor> m = actorRepo.findById(id);
+		return m;
 	}
 	// Add a Actor
 	@PostMapping("/")
