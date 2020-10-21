@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.bmdb.business.Actor;
 import com.bmdb.business.Movie;
@@ -25,9 +27,15 @@ public class MovieController
 	}
 	
 	// Get a Movie by id
-	public Optional getMovie(@PathVariable int id) {
+	@GetMapping("/{id}")
+	public Optional<Movie> getMovie(@PathVariable int id) {
 		Optional<Movie> m = movieRepo.findById(id);
-		return m;
+		if(m.isPresent())
+		{
+			return m;
+		}
+		else
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found");
 	}
 	// Add a Movie
 	@PostMapping("/")
@@ -57,11 +65,13 @@ public class MovieController
 	
 	// Delete a Movie
 	@DeleteMapping("/")
-	public void deleteMovie(@RequestBody Movie p)
+	public Movie deleteMovie(@RequestBody Movie p)
 	{
 		if(p != null)
 			movieRepo.delete(p);
 		else
 			System.out.println("No Movie given");
+		
+		return p;
 	}
 }
