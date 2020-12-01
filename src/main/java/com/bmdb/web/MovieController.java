@@ -26,6 +26,12 @@ public class MovieController
 		return movieRepo.findAll();
 	}
 	
+	// List all Movies for a rating
+	@GetMapping("")
+	public List<Movie> getAllMoviesByRating(@RequestParam String rating) {
+		return movieRepo.findByRating(rating);
+	}
+	
 	// Get a Movie by id
 	@GetMapping("/{id}")
 	public Optional<Movie> getMovie(@PathVariable int id) {
